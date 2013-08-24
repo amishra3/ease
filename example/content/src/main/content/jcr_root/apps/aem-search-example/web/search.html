@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Geometrixx search</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="bootstrap.min.css" />
+        <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="well well-small">
+                        Before you can test, please make sure Apache Solr is running locally on its default standalone port. You should be able to reach it on 
+                        <a href="http://localhost:8983/solr/#/collection1">this link.</a> If you have it running on another host or port, the 
+                        <a href="/crx/de/index.jsp#/apps/aem-search-example/config.author">URL configuration</a> must get adjusted.<br/>
+                        Trigger an index before your first query.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span3">
+                    <p>
+                        <button class="btn" onclick="triggerFullIndex();">Trigger full index</button>
+                    </p>
+                </div>
+                <div class="span9">                    
+                    <form action="#" id="search_form">
+                        <p>
+                        Query: <input id="search_query"/>
+                        <input type="submit" value="search" />
+                        </p>
+                    </form>                    
+                </div>
+            </div>
+            <div class="row alert alert-info" id="status_message" style="display: none;">
+            </div> 
+            <div class="row alert alert-error" id="error_message" style="display: none;">
+            </div>  
+            <div class="row" id="result" style="display: none;">
+                <div class="span12">
+                    <p>Found <span id="result_hits"></span> items. Took <span id="result_time"></span> ms.</p>
+                </div>
+                <div class="span3">
+                    <h3>Facets</h3>
+                    <div id="result_facets">
+
+                    </div>
+                </div>
+                <div class="span9">
+                    <h3>Results</h3>
+                    <div id="result_items">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function triggerFullIndex() {     
+                $("#error_message").hide();
+                $("#status_message").hide();
+                $("#result").hide();
+                $("#status_message").load("/bin/aem-search-example/fullindex?ck", function() {
+                    $("#status_message").show();
+                });
+            }
+            $("#search_form").submit(function(event) {         
+                $("#error_message").hide();
+                $("#status_message").hide();
+                $("#result").hide();
+                $.ajax(
+                        "/bin/aem-search-example/query", 
+                        {
+                            data: {
+                                q: $("#search_query").val()
+                            },                            
+                            success: function(data) {
+                                $("#status_message").html(
+                                    "Found " +
+                                    $("#result_hits").html(data["total"])
+                                    + " items in " +
+                                    $("#result_time").html(data["time"])
+                                    + " ms.");
+                                var facets = "";
+                                $.each(data["facets"], function(facetName, facetValues) {                                    
+                                    facets += '<ul class="nav nav-tabs nav-stacked"><li><strong>';
+                                    facets += facetName;
+                                    facets += "</strong></li>";
+                                    $.each(facetValues, function(index, facetValue) {
+                                        facets += "<li>";
+                                        facets += facetValue["value"];
+                                        facets += " (";
+                                        facets += facetValue["count"];
+                                        facets += ")";
+                                        facets += "</li>";
+                                    });
+                                    facets += "</ul>";                                    
+                                });
+                                $("#result_facets").html(facets);
+                                var items = "";
+                                $.each(data["items"], function(index, item) {
+                                   items += '<p><a href="' + item["path"] + '">';
+                                   items += "#" + (index+1) + " " + item["title"];
+                                   items += "</a><br/><small>score: " + item["score"] + "</small></p>";
+                                });
+                                $("#result_items").html(items);
+                                $("#result").show();
+                            },
+                            error: function(xhr,status) {
+                                $("#error_message").html(xhr.responseText).show();
+                            }        
+                        }
+                );
+                event.preventDefault();
+                return false;
+            });
+        </script>
+    </body>
+</html>
