@@ -15,14 +15,14 @@ To start with your own search integration project, all you need to do is add the
 	<dependency>
 		<groupId>com.mwmd</groupId>
 		<artifactId>ease-core</artifactId>
-		<version>0.6</version>
+		<version>0.7</version>
 		<scope>provided</scope>
 	</dependency></scope>			
 	</dependency>	
 	<dependency>
 		<groupId>com.mwmd</groupId>
 		<artifactId>ease-scr</artifactId>
-		<version>0.6</version>
+		<version>0.7</version>
 		<scope>provided</scope>			
 	</dependency>
 	...
