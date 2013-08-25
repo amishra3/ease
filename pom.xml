@@ -3,7 +3,7 @@
 
     <groupId>com.mwmd</groupId>
     <artifactId>ease-parent</artifactId>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>External AEM Search Extension - Parent</name>
@@ -110,7 +110,7 @@
 	
     <scm>       
         <developerConnection>scm:git:https://github.com/mwmd/ease.git</developerConnection>
-        <tag>ease-parent-0.7</tag>
+        <tag>HEAD</tag>
     </scm>
     <repositories>
         <repository>

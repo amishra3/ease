@@ -4,13 +4,13 @@
     <parent>
         <groupId>com.mwmd</groupId>
         <artifactId>ease-parent</artifactId>
-        <version>0.7</version>
+        <version>0.8-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>com.mwmd</groupId>
     <artifactId>ease-core</artifactId>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>External AEM Search Extension - Core</name>
