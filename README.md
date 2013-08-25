@@ -22,12 +22,13 @@ AEM is again short for Adobe Experience Manager, which is a content- and asset-m
 Features
 -----------
 * Generates structured index data
-* Plugin mechanism for indexing of custom content structures
-* Push-based data generation on AEM Author triggered by Content Replication
-* Full index generation
+* Plugin mechanism to index custom content structures
 * Binary data indexing
 * Indexing of specific content versions
+* Push-based data generation on AEM Author triggered by standard replication
+* Full index generation
 * Generic connector structure
+* Bulk transfer of index data
 
 Search platform connectors
 ----------
