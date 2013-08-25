@@ -55,8 +55,56 @@ Tested on AEM 5.6.1.
 
 ### EASE Maven dependencies ###
 
+To start with your own search integration project, all you need to do is add the following dependencies to your Maven pom.xml file:
 
-### Connector Maven dependencies ###
+	<!-- EASE dependencies -->
+	<dependency>
+		<groupId>com.mwmd</groupId>
+		<artifactId>ease-core</artifactId>
+		<version>0.7</version>
+		<scope>provided</scope>
+	</dependency></scope>			
+	</dependency>	
+	<dependency>
+		<groupId>com.mwmd</groupId>
+		<artifactId>ease-scr</artifactId>
+		<version>0.7</version>
+		<scope>provided</scope>			
+	</dependency>
+	...
+	<!-- Add this to your pom.xml or to your own Nexus server -->
+	<repositories>
+        <repository>
+            <id>mwmd</id>
+            <name>mwmd repository</name>
+            <url>http://nexus.wmd-software.com/content/groups/public/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+	
+### Creating custom indexers ### 
+
+Now that you've the API available in your project, you can start building your own indexers. The first step is to build at least one indexer for your page resource type. 
+
+	...
+	import com.mwmd.aem.search.core.annotation.Indexer;
+	import com.mwmd.aem.search.core.indexing.AbstractResourceIndexer;
+
+	@Indexer(resourceTypes = "geometrixx/components/contentpage")
+	public class GeometrixxPageIndexer extends AbstractResourceIndexer {
+
+		@Override
+		public void indexData(Map<String, Object> data, Resource resource, String containerPath) {
+			String title = resource.adaptTo(ValueMap.class).get("jcr:title", String.class);
+			data.put("title", title);
+		}
+	}
+	
+Implement *getReferences()* if to continue indexing with child components of your page. You can create indexers for all resource types which you plan to index.
+	
+### Deploy connector bundle and dependencies ###
+
+
 
 
 Example implementation
@@ -70,14 +118,14 @@ It's best to try out with a vanilla AEM 5.6.1 Author. Follow these steps to get 
 
 1. Install a fresh AEM 5.6.1 Author on standard port (4502) by double-clicking on the quickstart JAR file.
 1. Download [Apache Solr 4](http://lucene.apache.org/solr/) ZIP archive and extract it.
-1. Open a command prompt, navigate to \{Solr\}/example and execute "java -jar start.jar".
+1. Open a command prompt, navigate to \{Solr-directory\}/example and execute "java -jar start.jar".
 1. Login (admin / admin) in CRX Package Manager at http://localhost:4502/crx/packmgr. Upload & install the example CRX package.
 1. Open the search UI at http://localhost:4502/apps/ease-example/web/search.html
 1. Trigger a full index.
 
 * You can use full text search and see the facet values changing based on the search results.
 * You can verify the status of the index at the Solr UI at http://localhost:8983/solr/#/collection1
-* You can monitor the framework at \{AEM\}/crx-quickstart/logs/ease.log
+* You can monitor the framework at \{AEM-directory\}/crx-quickstart/logs/ease.log
 
 
 
