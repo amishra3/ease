@@ -57,7 +57,7 @@ Now that you've the API available, you can start building your own indexers. The
 		}
 	}
 ```	
-Implement *getReferences()* if to continue indexing with child components of your page. You can create indexers for all resource types which you plan to index.
+Implement *getReferences()* to continue indexing with child components of your page. You can create indexers for all resource types which you plan to index.
 	
 Deploy connector bundle and dependencies
 --------
