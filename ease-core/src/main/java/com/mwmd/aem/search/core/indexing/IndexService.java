@@ -49,7 +49,7 @@ public interface IndexService {
      * Returns an indexer for a content resource. The indexer is identified by the resource, and then asked if it
      * accepts the content resource.
      *
-     * @param resourceType content node which has to match to the indexer
+     * @param resource content node which has to match to the indexer
      * @return indexer matching the resource or null
      */
     ResourceIndexer getIndexer(Resource resource);

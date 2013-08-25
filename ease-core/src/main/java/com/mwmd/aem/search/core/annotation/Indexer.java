@@ -23,7 +23,6 @@ public @interface Indexer {
     /**
      * Specifies the resourceType(s) which an indexer is registered for.
      *
-     * @return
      */
     String[] resourceTypes();
 }
