@@ -6,8 +6,8 @@
     <entry key="version">1.0-SNAPSHOT</entry>
     <entry key="dependencies" />
     <entry key="packageFormatVersion">2</entry>
-    <entry key="description">aem-search-example Package</entry>
+    <entry key="description">ease-example Package</entry>
     <entry key="group">search</entry>
-    <entry key="name">aem-search-example-content</entry>
-    <entry key="path">/etc/packages/search/aem-search-example-content-1.0-SNAPSHOT.zip</entry>
+    <entry key="name">ease-example-content</entry>
+    <entry key="path">/etc/packages/search/ease-example-content-1.0-SNAPSHOT.zip</entry>
 </properties>

@@ -31,7 +31,7 @@ import org.apache.solr.common.SolrDocument;
 @Properties({
     @Property(name = "url", label = "Solr URL", description = "Address of Apache Solr instance")
 })
-@SlingServlet(paths = "/bin/aem-search-example/query", metatype = true)
+@SlingServlet(paths = "/bin/ease-example/query", metatype = true)
 public class QueryServlet extends SlingSafeMethodsServlet {
 
     private String url;

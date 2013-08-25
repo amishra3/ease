@@ -13,7 +13,7 @@ import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
  *
  * @author Matthias Wermund
  */
-@SlingServlet(paths = "/bin/aem-search-example/fullindex")
+@SlingServlet(paths = "/bin/ease-example/fullindex")
 public class IndexServlet extends SlingSafeMethodsServlet {
 
     @Reference

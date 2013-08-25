@@ -70,14 +70,14 @@ It's best to try out with a vanilla AEM 5.6.1 Author. Follow these steps to get 
 
 1. Install a fresh AEM 5.6.1 Author on standard port (4502) by double-clicking on the quickstart JAR file.
 1. Download [Apache Solr 4](http://lucene.apache.org/solr/) ZIP archive and extract it.
-1. Open a command prompt, navigate to <Solr directory>/example and execute "java -jar start.jar".
+1. Open a command prompt, navigate to \{Solr\}/example and execute "java -jar start.jar".
 1. Login (admin / admin) in CRX Package Manager at http://localhost:4502/crx/packmgr. Upload & install the example CRX package.
 1. Open the search UI at http://localhost:4502/apps/ease-example/web/search.html
 1. Trigger a full index.
 
-* You can use full text search and play around with the facets.
-* You can verify the status of the index at the Solr UI at localhost:8983/solr/#/collection1
-* You can monitor the framework at <AEM directory>/crx-quickstart/logs/ease.log
+* You can use full text search and see the facet values changing based on the search results.
+* You can verify the status of the index at the Solr UI at http://localhost:8983/solr/#/collection1
+* You can monitor the framework at \{AEM\}/crx-quickstart/logs/ease.log
 
 
 

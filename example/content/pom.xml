@@ -78,32 +78,32 @@
                         <embedded>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>ease-solr-example-bundle</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded>
                         <embedded>
                             <groupId>org.apache.httpcomponents</groupId>
                             <artifactId>httpclient-osgi</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded>	
                         <embedded>
                             <groupId>org.apache.httpcomponents</groupId>
                             <artifactId>httpcore-osgi</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded>	
                         <embedded>
                             <groupId>org.apache.zookeeper</groupId>
                             <artifactId>zookeeper</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded> 
                         <embedded>
                             <groupId>com.mwmd</groupId>
                             <artifactId>ease-core</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded>
                         <embedded>
                             <groupId>com.mwmd</groupId>
                             <artifactId>ease-solr</artifactId>
-                            <target>/apps/ease-solr-example/install</target>
+                            <target>/apps/ease-example/install</target>
                         </embedded>
                     </embeddeds>
                     <targetURL>http://${crx.host}:${crx.port}/crx/packmgr/service.jsp</targetURL>

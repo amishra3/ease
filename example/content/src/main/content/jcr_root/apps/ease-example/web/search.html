@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Geometrixx search</title>
+        <title>EASE example - Geometrixx search</title>
         <meta charset="UTF-8"/>
         <link rel="stylesheet" href="bootstrap.min.css" />
         <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
@@ -12,9 +12,8 @@
                 <div class="span12">
                     <div class="well well-small">
                         Before you can test, please make sure Apache Solr is running locally on its default standalone port. You should be able to reach it on 
-                        <a href="http://localhost:8983/solr/#/collection1">this link.</a> If you have it running on another host or port, the 
-                        <a href="/crx/de/index.jsp#/apps/aem-search-example/config.author">URL configuration</a> must get adjusted.<br/>
-                        Trigger an index before your first query.
+                        <a href="http://localhost:8983/solr/#/collection1">this link.</a><br/>
+                        Remember to trigger an index before your first query.
                     </div>
                 </div>
             </div>
@@ -60,7 +59,7 @@
                                 $("#error_message").hide();
                                 $("#status_message").hide();
                                 $("#result").hide();
-                                $("#status_message").load("/bin/aem-search-example/fullindex?ck", function() {
+                                $("#status_message").load("/bin/ease-example/fullindex?ck", function() {
                                     $("#status_message").show();
                                 });
                             }
@@ -69,7 +68,7 @@
                                 $("#status_message").hide();
                                 $("#result").hide();
                                 $.ajax(
-                                        "/bin/aem-search-example/query",
+                                        "/bin/ease-example/query",
                                         {
                                             data: {
                                                 q: $("#search_query").val()
