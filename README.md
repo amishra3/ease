@@ -1,8 +1,8 @@
 EASE for Adobe Experience Manager
 ====
 
-### * [Getting started with EASE](getting_started.md)
-### * [Example project implementation](example.md)
+#### [Getting started with EASE](getting_started.md)
+#### [Example project implementation](example.md)
 
 What is EASE?
 ----------
@@ -50,5 +50,5 @@ Javadoc API Documentation
 * [ease-solr](http://nexus.wmd-software.com/api/ease-solr/current/)
 
 
-### * [Getting started with EASE](getting_started.md)
-### * [Example project implementation](example.md)
+#### [Getting started with EASE](getting_started.md)
+#### [Example project implementation](example.md)
