@@ -3,4 +3,4 @@
  * <b>E</b>xtension). The EASE framework provides a technology-agnostic way of integrating external search platforms
  * with Adobe Experience Manager.
  */
-package com.mwmd.aem.search.solr;
+package com.mwmd.aem.search.solr.impl;
