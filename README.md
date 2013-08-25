@@ -29,7 +29,7 @@ Features
 * Indexing of specific content versions
 * Generic connector structure
 
-Search platforms connectors
+Search platform connectors
 ----------
 Currently the following search platforms are supported via open source connectors:
 * [Apache Solr 4](http://lucene.apache.org/solr/)
