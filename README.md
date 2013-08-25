@@ -82,10 +82,11 @@ To start with your own search integration project, all you need to do is add the
         </repository>
     </repositories>
 	
+These are all necessary dependencies to have the EASE API for development. 
 
 ### Creating custom indexers ### 
 
-Now that you've the API available in your project, you can start building your own indexers. The first step is to build at least one indexer for your page resource type. 
+Now that you've the API available, you can start building your own indexers. The first step is to build at least one indexer for your page resource type. 
 
 	...
 	import com.mwmd.aem.search.core.annotation.Indexer;
