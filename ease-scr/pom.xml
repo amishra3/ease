@@ -4,13 +4,13 @@
     <parent>
         <groupId>com.mwmd</groupId>
         <artifactId>ease-parent</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>com.mwmd</groupId>
     <artifactId>ease-scr</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
     <packaging>jar</packaging>
 
     <name>External AEM Search Extension - SCR Annotations</name>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.mwmd</groupId>
             <artifactId>ease-core</artifactId>
-            <version>0.6-SNAPSHOT</version>
+            <version>0.6</version>
         </dependency>
     </dependencies>
   
