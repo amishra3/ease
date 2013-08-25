@@ -10,7 +10,7 @@ EASE Maven dependencies
 --------
 
 To start with your own search integration project, all you need to do is add the following dependencies to your Maven pom.xml file:
-
+```xml
 	<!-- EASE dependencies -->
 	<dependency>
 		<groupId>com.mwmd</groupId>
@@ -35,14 +35,14 @@ To start with your own search integration project, all you need to do is add the
             <layout>default</layout>
         </repository>
     </repositories>
-	
+```	
 These are all necessary dependencies to have the EASE API for development. 
 
 Creating custom indexers
 --------
 
 Now that you've the API available, you can start building your own indexers. The first step is to build at least one indexer for your page resource type. 
-
+```java
 	...
 	import com.mwmd.aem.search.core.annotation.Indexer;
 	import com.mwmd.aem.search.core.indexing.AbstractResourceIndexer;
@@ -56,7 +56,7 @@ Now that you've the API available, you can start building your own indexers. The
 			data.put("title", title);
 		}
 	}
-	
+```	
 Implement *getReferences()* if to continue indexing with child components of your page. You can create indexers for all resource types which you plan to index.
 	
 Deploy connector bundle and dependencies
