@@ -31,6 +31,7 @@
         <publish.crx.password>admin</publish.crx.password>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <ease.version>0.5</ease.version>
     </properties>
 
     <dependencyManagement>
@@ -143,19 +144,19 @@
             <dependency>
                 <groupId>com.mwmd</groupId>
                 <artifactId>ease-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${ease.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.mwmd</groupId>
                 <artifactId>ease-solr</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${ease.version}</version>
                 <scope>provided</scope>			
             </dependency>	
             <dependency>
                 <groupId>com.mwmd</groupId>
                 <artifactId>ease-scr</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${ease.version}</version>
                 <scope>provided</scope>			
             </dependency>
             <dependency>
