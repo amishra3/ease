@@ -37,10 +37,10 @@ Currently the following search platforms are supported via open source connector
 EASE modules
 -----------
 
-* *ease-parent*: root Apache Maven project
+* *ease-parent*: Root Apache Maven project
 * *ease-core*: API and core implementation
 * *ease-scr*: Plugin annotations processor for [Apache Felix SCR Maven Plugin](http://felix.apache.org/documentation/subprojects/apache-felix-maven-scr-plugin.html)
-* *ease-solr*: Connector for [Apache Solr](http://lucene.apache.org/solr/) JAVADOC
+* *ease-solr*: Connector for [Apache Solr](http://lucene.apache.org/solr/)
 
 Javadoc API Documentation
 --------
