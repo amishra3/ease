@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.core.indexing;
 
 /**
+ * Signals an error during index data generation or transmission.
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 public class IndexException extends Exception {
-    
+
     public IndexException(String message) {
         super(message);
     }
@@ -21,7 +18,4 @@ public class IndexException extends Exception {
     public IndexException(Throwable cause) {
         super(cause);
     }
-    
-    
-    
 }

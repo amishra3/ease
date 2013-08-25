@@ -6,7 +6,6 @@ package com.mwmd.aem.search.example.impl.servlet;
 
 import com.mwmd.aem.search.example.IndexFields;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -27,49 +26,49 @@ import org.apache.solr.common.SolrDocument;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 @Properties({
-    @Property(name = "url", label = "Solr URL", description="Address of Apache Solr instance")
+    @Property(name = "url", label = "Solr URL", description = "Address of Apache Solr instance")
 })
 @SlingServlet(paths = "/bin/aem-search-example/query", metatype = true)
 public class QueryServlet extends SlingSafeMethodsServlet {
-    
+
     private String url;
-    
+
     @Activate
-    protected void activate(Map<String,Object> properties) {
-        
+    protected void activate(Map<String, Object> properties) {
+
         this.url = (String) properties.get("url");
     }
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-                                
+
         String q = request.getParameter("q");
         if (q == null || q.trim().length() == 0) {
             q = "*:*";
         }
-        try {            
+        try {
             SolrQuery query = new SolrQuery(q);
-            query.addFacetField(IndexFields.LANGUAGE, IndexFields.TAGS);        
+            query.addFacetField(IndexFields.LANGUAGE, IndexFields.TAGS);
             query.setFacetMinCount(1);
             query.setRows(Integer.MAX_VALUE);
-            query.setFields(IndexFields.PATH, IndexFields.TITLE, "score");                
+            query.setFields(IndexFields.PATH, IndexFields.TITLE, "score");
             long time = System.currentTimeMillis();
             QueryResponse result = new HttpSolrServer(url).query(query);
             time = System.currentTimeMillis() - time;
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");        
-            JSONWriter json = new JSONWriter(response.getWriter());        
+            response.setContentType("application/json");
+            JSONWriter json = new JSONWriter(response.getWriter());
             json.object();
             json.key("time").value(time);
             json.key("total").value(result.getResults().getNumFound());
             json.key("facets").object();
-            for (FacetField facet: result.getFacetFields()) {
+            for (FacetField facet : result.getFacetFields()) {
                 if (facet.getValueCount() > 0) {
                     json.key(facet.getName()).array();
-                    for (FacetField.Count value: facet.getValues()) {
+                    for (FacetField.Count value : facet.getValues()) {
                         json.object();
                         json.key("value").value(value.getName());
                         json.key("count").value(value.getCount());
@@ -80,7 +79,7 @@ public class QueryServlet extends SlingSafeMethodsServlet {
             }
             json.endObject();
             json.key("items").array();
-            for (SolrDocument doc: result.getResults()) {
+            for (SolrDocument doc : result.getResults()) {
                 json.object();
                 json.key("path").value(doc.getFieldValue(IndexFields.PATH));
                 json.key("title");
@@ -91,8 +90,8 @@ public class QueryServlet extends SlingSafeMethodsServlet {
                 } else if (titleValues != null) {
                     title = titleValues.toString();
                 }
-                json.value(title != null && !title.isEmpty() ? 
-                        title : doc.getFieldValue(IndexFields.PATH));
+                json.value(title != null && !title.isEmpty()
+                        ? title : doc.getFieldValue(IndexFields.PATH));
                 json.key("score").value(doc.getFieldValue("score"));
                 json.endObject();
             }
@@ -101,8 +100,6 @@ public class QueryServlet extends SlingSafeMethodsServlet {
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().print(e.getMessage());
-        }        
+        }
     }
-    
-    
 }

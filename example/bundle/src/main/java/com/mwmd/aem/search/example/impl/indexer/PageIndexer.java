@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.example.impl.indexer;
 
 import com.mwmd.aem.search.core.annotation.Indexer;
@@ -18,15 +14,15 @@ import org.apache.sling.api.resource.ValueMap;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
-@Indexer(resourceTypes = {"geometrixx/components/contentpage", "geometrixx/components/homepage", 
+@Indexer(resourceTypes = {"geometrixx/components/contentpage", "geometrixx/components/homepage",
     "foundation/components/page", "geometrixx/components/page"})
 public class PageIndexer extends AbstractResourceIndexer {
 
     @Override
     public void indexData(Map<String, Object> data, Resource resource, String containerPath) {
-        
+
         ValueMap properties = resource.adaptTo(ValueMap.class);
         data.put(IndexFields.PATH, containerPath + ".html");
         data.put(IndexFields.TITLE, properties.get("jcr:title", String.class));
@@ -34,16 +30,16 @@ public class PageIndexer extends AbstractResourceIndexer {
         if (language.matches()) {
             data.put(IndexFields.LANGUAGE, language.group(1));
         }
-        String description = properties.get("jcr:description", String.class);            
+        String description = properties.get("jcr:description", String.class);
         if (description != null) {
             data.put(IndexFields.TEXT, description);
         }
     }
-  
+
     @Override
     public List<ResourceReference> getReferences(Resource contentRes) {
-        
-        List<ResourceReference> references = new ArrayList<ResourceReference>();        
+
+        List<ResourceReference> references = new ArrayList<ResourceReference>();
         if (contentRes != null) {
             Resource parRes = contentRes.getChild("par");
             if (parRes != null) {
@@ -53,5 +49,4 @@ public class PageIndexer extends AbstractResourceIndexer {
         }
         return references;
     }
-        
 }

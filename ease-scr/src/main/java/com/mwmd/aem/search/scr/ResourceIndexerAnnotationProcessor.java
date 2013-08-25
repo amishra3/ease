@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.scr;
 
 import com.mwmd.aem.search.core.annotation.Indexer;
@@ -18,19 +14,20 @@ import org.apache.felix.scrplugin.description.ComponentDescription;
 import org.apache.felix.scrplugin.description.ServiceDescription;
 
 /**
+ * Scans the classpath for {@link Indexer} annotations and created OSGi metadata based on it.
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 public class ResourceIndexerAnnotationProcessor implements AnnotationProcessor {
 
     @Override
     public void process(ScannedClass scannedClass, ClassDescription classDesc) throws SCRDescriptorException, SCRDescriptorFailureException {
-        
+
         List<ClassAnnotation> indexers = scannedClass.getClassAnnotations(Indexer.class.getName());
         scannedClass.processed(indexers);
 
-        for(ClassAnnotation cad: indexers) {
-            
+        for (ClassAnnotation cad : indexers) {
+
             // generate component and service
             ComponentDescription cd = new ComponentDescription(cad);
             cd.setName(classDesc.getDescribedClass().getName());
@@ -42,22 +39,19 @@ public class ResourceIndexerAnnotationProcessor implements AnnotationProcessor {
             ServiceDescription sd = new ServiceDescription(cad);
             sd.addInterface(ResourceIndexer.class.getName());
             classDesc.add(sd);
-            
+
         }
     }
 
     @Override
     public String getName() {
-        
+
         return "Search Indexer processor";
     }
 
     @Override
     public int getRanking() {
-        
+
         return 1000;
     }
-    
-    
-    
 }

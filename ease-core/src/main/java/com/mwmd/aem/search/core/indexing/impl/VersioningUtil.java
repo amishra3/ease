@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.core.indexing.impl;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -18,18 +14,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 public class VersioningUtil {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(VersioningUtil.class);
-    
+
     private VersioningUtil() {
-        
     }
-    
+
     public static Resource resolveRevision(VersionManager versionManager, Resource resource, String revision) throws RepositoryException {
-        
+
         if (StringUtils.isBlank(revision)) {
             return resource;
         }
@@ -47,42 +42,40 @@ public class VersioningUtil {
         if (node == null) {
             LOG.warn("Unable to select revision {}, node isn't versionable: {}", revision, resource.getPath());
             return null;
-        }            
+        }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Selecting revision {} of {}", revision, node.getPath());
         }
         VersionHistory history = versionManager.getVersionHistory(node.getPath());
         Version version = null;
         try {
-            version = history.getVersion(revision);                
-        } catch (VersionException e) {                
+            version = history.getVersion(revision);
+        } catch (VersionException e) {
         }
         if (version == null) {
             try {
-                version = history.getVersionByLabel(revision);                
-            } catch (VersionException e) {                
+                version = history.getVersionByLabel(revision);
+            } catch (VersionException e) {
             }
         }
         if (version == null || !version.hasNode(JcrConstants.JCR_FROZENNODE)) {
             LOG.warn("No revision {} found for node {}", revision, node.getPath());
             return null;
-        }    
+        }
         return resource.getResourceResolver().getResource(version.getNode(JcrConstants.JCR_FROZENNODE).getPath());
     }
-    
+
     public static Resource resolveReference(Resource resourceFrom, String contentPathFrom, String referenceTo) {
-        
-        if (referenceTo.equals(contentPathFrom)) {            
+
+        if (referenceTo.equals(contentPathFrom)) {
             // same resource
             return resourceFrom;
         }
         if (referenceTo.startsWith(contentPathFrom + "/")) {
             // sub-resource, navigate within revision context
-            return resourceFrom.getChild(referenceTo.substring(contentPathFrom.length()+1));
+            return resourceFrom.getChild(referenceTo.substring(contentPathFrom.length() + 1));
         }
         // no sub-resource, leave revision context
         return resourceFrom.getResourceResolver().getResource(referenceTo);
     }
-    
-    
 }

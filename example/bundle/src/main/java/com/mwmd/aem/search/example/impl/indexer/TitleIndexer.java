@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.example.impl.indexer;
 
 import com.mwmd.aem.search.core.annotation.Indexer;
@@ -14,17 +10,17 @@ import org.apache.sling.api.resource.ValueMap;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 @Indexer(resourceTypes = "geometrixx/components/title")
 public class TitleIndexer extends AbstractResourceIndexer {
 
     @Override
-    public void indexData(Map<String, Object> data, Resource resource, String containerPath) {        
+    public void indexData(Map<String, Object> data, Resource resource, String containerPath) {
         ValueMap properties = resource.adaptTo(ValueMap.class);
         String title = properties.get("jcr:title", String.class);
         if (StringUtils.isNotBlank(title)) {
             putMultiValue(data, IndexFields.TEXT, title);
-        }        
-    }    
+        }
+    }
 }

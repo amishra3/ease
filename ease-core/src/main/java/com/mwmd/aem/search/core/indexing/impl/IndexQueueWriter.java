@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.core.indexing.impl;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -28,41 +24,39 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 public class IndexQueueWriter implements Runnable {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(IndexQueueWriter.class);        
-    
-    private IndexServiceImpl indexService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(IndexQueueWriter.class);
+    private IndexServiceImpl indexService;
     public boolean terminated;
-    
+
     public void stop() {
         this.terminated = true;
     }
-    
+
     public IndexQueueWriter(IndexServiceImpl indexService) {
-        
+
         this.indexService = indexService;
     }
 
     @Override
-    public void run() {                
-        
+    public void run() {
+
         ResourceResolver resolver = null;
         try {
             resolver = indexService.getResolverFactory().getAdministrativeResourceResolver(null);
-            while (!terminated) {     
+            while (!terminated) {
                 boolean relevant = true;
-                IndexTask task = indexService.getTasks().take();            
+                IndexTask task = indexService.getTasks().take();
                 String path = task.getPath();
 
                 /**
                  * AEM will deactivate all child resources within this branch , so remove them too.
                  */
                 if (IndexOperation.REMOVE.equals(task.getOp())) {
-                    Resource resource = resolver.getResource(path); 
+                    Resource resource = resolver.getResource(path);
                     if (resource != null) {
                         Iterator<Resource> children = resource.listChildren();
                         while (children.hasNext()) {
@@ -76,21 +70,21 @@ public class IndexQueueWriter implements Runnable {
                             }
                         }
                     }
-                /**
-                 * Only in case it's ADD, filter further, because it has to be indexable content.
-                 */
+                    /**
+                     * Only in case it's ADD, filter further, because it has to be indexable content.
+                     */
                 } else if (IndexOperation.ADD.equals(task.getOp())) {
                     Resource resource = resolver.getResource(path);
 
                     if (resource == null) {
-                        LOG.warn("Resource not found: {})", path);           
+                        LOG.warn("Resource not found: {})", path);
                         relevant = false;
                     } else {
                         // drill into jcr:content
                         Resource contentRes = resource.getChild(JcrConstants.JCR_CONTENT);
                         if (contentRes != null) {
                             resource = contentRes;
-                        }  
+                        }
                         // filter by known ResourceIndexer                        
                         ResourceIndexer indexer = indexService.getIndexer(resource);
                         if (indexer == null || !indexer.accepts(resource)) {
@@ -105,14 +99,14 @@ public class IndexQueueWriter implements Runnable {
                 if (relevant) {
                     /*
                      * At this point the index operation is considered valid and should get written to persistant queue in the repository.
-                     */            
+                     */
                     try {
                         Resource queueRes = resolver.getResource(QUEUE_ROOT);
                         Node queueNode;
                         if (queueRes == null) {
                             // create queue root
                             Node parent = resolver.getResource(ResourceUtil.getParent(QUEUE_ROOT)).adaptTo(Node.class);
-                            queueNode = parent.addNode(ResourceUtil.getName(QUEUE_ROOT), JcrResourceConstants.NT_SLING_ORDERED_FOLDER);                
+                            queueNode = parent.addNode(ResourceUtil.getName(QUEUE_ROOT), JcrResourceConstants.NT_SLING_ORDERED_FOLDER);
                         } else {
                             queueNode = queueRes.adaptTo(Node.class);
                         }
@@ -130,7 +124,7 @@ public class IndexQueueWriter implements Runnable {
                         LOG.error("Error during index queue modification.", e);
                     }
                 }
-            }   
+            }
         } catch (InterruptedException e) {
             if (this.terminated) {
                 if (LOG.isDebugEnabled()) {
@@ -152,5 +146,4 @@ public class IndexQueueWriter implements Runnable {
             LOG.debug("Queue writer stopped");
         }
     }
-    
 }

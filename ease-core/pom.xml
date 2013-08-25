@@ -1,82 +1,94 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
   
-  <parent>
+    <parent>
+        <groupId>com.mwmd</groupId>
+        <artifactId>ease-parent</artifactId>
+        <version>0.6-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
     <groupId>com.mwmd</groupId>
-    <artifactId>ease-parent</artifactId>
+    <artifactId>ease-core</artifactId>
     <version>0.6-SNAPSHOT</version>
-	<relativePath>..</relativePath>
-  </parent>
+    <packaging>bundle</packaging>
 
-  <groupId>com.mwmd</groupId>
-  <artifactId>ease-core</artifactId>
-  <version>0.6-SNAPSHOT</version>
-  <packaging>bundle</packaging>
+    <name>External AEM Search Extension - Core</name>
+    <url>https://github.com/mwmd/ease</url>
 
-  <name>External AEM Search Extension - Core</name>
-  <url>https://github.com/mwmd/ease</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>org.apache.felix.scr.annotations</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.osgi</groupId>
-        <artifactId>org.osgi.compendium</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.adobe.granite</groupId>
-        <artifactId>com.adobe.granite.replication.core</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.settings</artifactId>
-    </dependency>   
-    <dependency>
-        <groupId>com.day.cq</groupId>
-        <artifactId>cq-commons</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>javax.jcr</groupId>
-        <artifactId>jcr</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.sling</groupId>
-        <artifactId>org.apache.sling.jcr.resource</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.day.cq.dam</groupId>
-        <artifactId>cq-dam-api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.day.cq.wcm</groupId>
-        <artifactId>cq-wcm-api</artifactId>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.granite</groupId>
+            <artifactId>com.adobe.granite.replication.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.settings</artifactId>
+        </dependency>   
+        <dependency>
+            <groupId>com.day.cq</groupId>
+            <artifactId>cq-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.jcr</groupId>
+            <artifactId>jcr</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.jcr.resource</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.dam</groupId>
+            <artifactId>cq-dam-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.day.cq.wcm</groupId>
+            <artifactId>cq-wcm-api</artifactId>
+        </dependency>
+    </dependencies>
   
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -114,8 +126,8 @@
                         <Bundle-SymbolicName>com.mwmd.aem.search-core-bundle</Bundle-SymbolicName>
                         <Bundle-Category>search</Bundle-Category>
                         <Export-Package>
-                                com.mwmd.aem.search.core.annotation,
-                                com.mwmd.aem.search.core.indexing
+                            com.mwmd.aem.search.core.annotation,
+                            com.mwmd.aem.search.core.indexing
                         </Export-Package>
                     </instructions>
                 </configuration>

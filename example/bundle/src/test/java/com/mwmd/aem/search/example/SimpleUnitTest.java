@@ -10,5 +10,4 @@ public class SimpleUnitTest {
     public void someTest() {
         assertTrue(true);
     }
-
 }

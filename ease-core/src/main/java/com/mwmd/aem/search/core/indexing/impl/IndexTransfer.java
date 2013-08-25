@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.core.indexing.impl;
 
 import com.day.cq.commons.jcr.JcrConstants;
@@ -30,58 +26,56 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 public class IndexTransfer implements Runnable {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(IndexTransfer.class);    
-    
-    private IndexServiceImpl indexService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(IndexTransfer.class);
+    private IndexServiceImpl indexService;
     public boolean terminated;
-    
+
     public void stop() {
         this.terminated = true;
     }
-   
+
     public IndexTransfer(IndexServiceImpl indexService) {
         this.indexService = indexService;
     }
-        
+
     @Override
     public void run() {
-        
-        ResourceResolver resolver = null;        
+
+        ResourceResolver resolver = null;
         IndexServer server = indexService.getServer();
         if (server == null) {
             if (LOG.isInfoEnabled()) {
-                LOG.info("No index server available.");                
+                LOG.info("No index server available.");
             }
             return;
         }
-        
+
         boolean modifiedIndex = false;
-        
+
         try {
             resolver = indexService.getResolverFactory().getAdministrativeResourceResolver(null);
             VersionManager versionManager = resolver.adaptTo(Session.class).getWorkspace().getVersionManager();
-            
-            while(!this.terminated) {
-                
+
+            while (!this.terminated) {
+
                 boolean modifiedQueue = false;
                 modifiedIndex = false;
-                
-                Resource queueRes = resolver.getResource(IndexService.QUEUE_ROOT);                
-                if (queueRes != null) {                    
+
+                Resource queueRes = resolver.getResource(IndexService.QUEUE_ROOT);
+                if (queueRes != null) {
                     Iterator<Resource> jobs = queueRes.listChildren();
                     while (jobs.hasNext()) {
                         Resource jobRes = jobs.next();
                         try {
-                            ValueMap jobData = jobRes.adaptTo(ValueMap.class);                   
+                            ValueMap jobData = jobRes.adaptTo(ValueMap.class);
                             String jobPath = jobData.get(IndexService.PN_PATH, String.class);
-                            String jobAction = jobData.get(IndexService.PN_ACTION, String.class);                        
-                            String jobRevision = jobData.get(IndexService.PN_REVISION, String.class);                        
-                            if (IndexOperation.ADD.toString().equals(jobAction)) {                            
+                            String jobAction = jobData.get(IndexService.PN_ACTION, String.class);
+                            String jobRevision = jobData.get(IndexService.PN_REVISION, String.class);
+                            if (IndexOperation.ADD.toString().equals(jobAction)) {
                                 Resource targetRes = resolver.getResource(jobPath);
                                 if (targetRes != null) {
                                     // resolve any selected content version at this point
@@ -91,7 +85,7 @@ public class IndexTransfer implements Runnable {
                                         Resource contentRes = targetRes.getChild(JcrConstants.JCR_CONTENT);
                                         if (contentRes != null) {
                                             targetRes = contentRes;
-                                        }                                                                                                                
+                                        }
                                         if (indexService.getIndexer(targetRes) != null) {
                                             try {
                                                 add(server, targetRes, jobPath);
@@ -111,7 +105,7 @@ public class IndexTransfer implements Runnable {
                                         LOG.warn("Ignoring due to failed revision resolution: {}", jobPath);
                                     }
                                 } else {
-                                    LOG.warn("Ignoring due to content not found: {}", jobPath);   
+                                    LOG.warn("Ignoring due to content not found: {}", jobPath);
                                 }
                             } else if (IndexOperation.REMOVE.toString().equals(jobAction)) {
                                 try {
@@ -122,7 +116,7 @@ public class IndexTransfer implements Runnable {
                                 modifiedIndex = true;
                             }
                             jobRes.adaptTo(Node.class).remove();
-                            modifiedQueue = true;                           
+                            modifiedQueue = true;
                         } catch (Exception e) {
                             LOG.error("Error processing index job " + jobRes.getName(), e);
                         }
@@ -132,10 +126,10 @@ public class IndexTransfer implements Runnable {
                         resolver.adaptTo(Session.class).save();
                     }
                     if (modifiedIndex) {
-                        server.commit();                    
-                    }   
+                        server.commit();
+                    }
 
-                }    
+                }
                 // if no change to queue, wait until notification or timeout until next attempt
                 if (!modifiedQueue) {
                     try {
@@ -169,9 +163,9 @@ public class IndexTransfer implements Runnable {
             }
         }
     }
-    
+
     private void add(IndexServer server, Resource resource, String containerPath) throws IndexException, RepositoryException {
-                
+
         Map<String, Object> data = new HashMap<String, Object>();
         // start content parsing
         ResourceBinary binary = readContent(data, resource, containerPath, null, true);
@@ -181,9 +175,9 @@ public class IndexTransfer implements Runnable {
             server.add(containerPath, data);
         }
     }
-    
+
     private ResourceBinary readContent(Map<String, Object> data, Resource resource, String containerPath, String forceResourceType, boolean extractBinary) {
-        
+
         String resourceType = StringUtils.defaultIfEmpty(forceResourceType, resource.getResourceType());
         ResourceIndexer indexer = indexService.getIndexer(resourceType);
         if (indexer == null) {
@@ -193,10 +187,10 @@ public class IndexTransfer implements Runnable {
         if (indexer != null && indexer.accepts(resource)) {
             indexer.indexData(data, resource, containerPath);
             if (extractBinary) {
-                binary = indexer.getBinary(resource);                
-            }            
+                binary = indexer.getBinary(resource);
+            }
             List<ResourceReference> references = indexer.getReferences(resource);
-            for (ResourceReference ref: references) {
+            for (ResourceReference ref : references) {
                 if (binary == null && extractBinary) {
                     binary = readContent(data, ref.getResource(), containerPath, ref.getForceResourceType(), true);
                 } else {
@@ -206,5 +200,4 @@ public class IndexTransfer implements Runnable {
         }
         return binary;
     }
-    
 }

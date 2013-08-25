@@ -27,8 +27,8 @@
                 <div class="span9">                    
                     <form action="#" id="search_form">
                         <p>
-                        Query: <input id="search_query"/>
-                        <input type="submit" value="search" />
+                            Query: <input id="search_query"/>
+                            <input type="submit" value="search" />
                         </p>
                     </form>                    
                 </div>
@@ -56,64 +56,64 @@
             </div>
         </div>
         <script type="text/javascript">
-            function triggerFullIndex() {     
-                $("#error_message").hide();
-                $("#status_message").hide();
-                $("#result").hide();
-                $("#status_message").load("/bin/aem-search-example/fullindex?ck", function() {
-                    $("#status_message").show();
-                });
-            }
-            $("#search_form").submit(function(event) {         
-                $("#error_message").hide();
-                $("#status_message").hide();
-                $("#result").hide();
-                $.ajax(
-                        "/bin/aem-search-example/query", 
-                        {
-                            data: {
-                                q: $("#search_query").val()
-                            },                            
-                            success: function(data) {
-                                $("#status_message").html(
-                                    "Found " +
-                                    $("#result_hits").html(data["total"])
-                                    + " items in " +
-                                    $("#result_time").html(data["time"])
-                                    + " ms.");
-                                var facets = "";
-                                $.each(data["facets"], function(facetName, facetValues) {                                    
-                                    facets += '<ul class="nav nav-tabs nav-stacked"><li><strong>';
-                                    facets += facetName;
-                                    facets += "</strong></li>";
-                                    $.each(facetValues, function(index, facetValue) {
-                                        facets += "<li>";
-                                        facets += facetValue["value"];
-                                        facets += " (";
-                                        facets += facetValue["count"];
-                                        facets += ")";
-                                        facets += "</li>";
-                                    });
-                                    facets += "</ul>";                                    
+                            function triggerFullIndex() {
+                                $("#error_message").hide();
+                                $("#status_message").hide();
+                                $("#result").hide();
+                                $("#status_message").load("/bin/aem-search-example/fullindex?ck", function() {
+                                    $("#status_message").show();
                                 });
-                                $("#result_facets").html(facets);
-                                var items = "";
-                                $.each(data["items"], function(index, item) {
-                                   items += '<p><a href="' + item["path"] + '">';
-                                   items += "#" + (index+1) + " " + item["title"];
-                                   items += "</a><br/><small>score: " + item["score"] + "</small></p>";
-                                });
-                                $("#result_items").html(items);
-                                $("#result").show();
-                            },
-                            error: function(xhr,status) {
-                                $("#error_message").html(xhr.responseText).show();
-                            }        
-                        }
-                );
-                event.preventDefault();
-                return false;
-            });
+                            }
+                            $("#search_form").submit(function(event) {
+                                $("#error_message").hide();
+                                $("#status_message").hide();
+                                $("#result").hide();
+                                $.ajax(
+                                        "/bin/aem-search-example/query",
+                                        {
+                                            data: {
+                                                q: $("#search_query").val()
+                                            },
+                                            success: function(data) {
+                                                $("#status_message").html(
+                                                        "Found " +
+                                                        $("#result_hits").html(data["total"])
+                                                        + " items in " +
+                                                        $("#result_time").html(data["time"])
+                                                        + " ms.");
+                                                var facets = "";
+                                                $.each(data["facets"], function(facetName, facetValues) {
+                                                    facets += '<ul class="nav nav-tabs nav-stacked"><li><strong>';
+                                                    facets += facetName;
+                                                    facets += "</strong></li>";
+                                                    $.each(facetValues, function(index, facetValue) {
+                                                        facets += "<li>";
+                                                        facets += facetValue["value"];
+                                                        facets += " (";
+                                                        facets += facetValue["count"];
+                                                        facets += ")";
+                                                        facets += "</li>";
+                                                    });
+                                                    facets += "</ul>";
+                                                });
+                                                $("#result_facets").html(facets);
+                                                var items = "";
+                                                $.each(data["items"], function(index, item) {
+                                                    items += '<p><a href="' + item["path"] + '">';
+                                                    items += "#" + (index + 1) + " " + item["title"];
+                                                    items += "</a><br/><small>score: " + item["score"] + "</small></p>";
+                                                });
+                                                $("#result_items").html(items);
+                                                $("#result").show();
+                                            },
+                                            error: function(xhr, status) {
+                                                $("#error_message").html(xhr.responseText).show();
+                                            }
+                                        }
+                                );
+                                event.preventDefault();
+                                return false;
+                            });
         </script>
     </body>
 </html>

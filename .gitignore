@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/example/bundle/target/
+/example/content/target/

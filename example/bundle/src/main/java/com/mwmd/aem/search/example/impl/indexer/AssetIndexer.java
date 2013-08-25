@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.example.impl.indexer;
 
 import com.mwmd.aem.search.core.annotation.Indexer;
@@ -17,36 +13,36 @@ import org.apache.sling.api.resource.Resource;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 @Indexer(resourceTypes = "dam:AssetContent")
 public class AssetIndexer extends AbstractResourceIndexer {
 
     @Override
     public void indexData(Map<String, Object> data, Resource resource, String containerPath) {
-        
+
         Asset asset = resource.adaptTo(Asset.class);
-        if (asset != null) {            
-            data.put(IndexFields.PATH, asset.getPath());           
+        if (asset != null) {
+            data.put(IndexFields.PATH, asset.getPath());
             Object tagsArr = asset.getMetadata(NameConstants.PN_TAGS);
-            if (tagsArr != null && tagsArr instanceof Object[]) {   
+            if (tagsArr != null && tagsArr instanceof Object[]) {
                 Object[] tags = (Object[]) tagsArr;
-                for (Object tag: tags) {
+                for (Object tag : tags) {
                     putMultiValue(data, IndexFields.TAGS, tag.toString());
                 }
             }
-            
+
             String title = StringUtils.trimToNull((String) asset.getMetadataValue("dc:title"));
-            if (title == null || title.trim().length() == 0) {                
+            if (title == null || title.trim().length() == 0) {
                 title = asset.getName();
-            }            
+            }
             data.put(IndexFields.TITLE, title);
         }
     }
 
     @Override
     public ResourceBinary getBinary(Resource resource) {
-                
+
         Asset asset = resource.adaptTo(Asset.class);
         ResourceBinary binary = null;
         if (asset != null) {
@@ -67,7 +63,7 @@ public class AssetIndexer extends AbstractResourceIndexer {
 
     @Override
     public boolean accepts(Resource resource) {
-        
+
         Asset asset = resource.adaptTo(Asset.class);
         if (asset != null) {
             String mime = StringUtils.lowerCase(asset.getMimeType());
@@ -75,7 +71,4 @@ public class AssetIndexer extends AbstractResourceIndexer {
         }
         return false;
     }
-    
-    
-    
 }

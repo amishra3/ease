@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.example.impl.indexer;
 
 import com.mwmd.aem.search.core.annotation.Indexer;
@@ -14,18 +10,18 @@ import org.apache.sling.api.resource.Resource;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 @Indexer(resourceTypes = "foundation/components/parsys")
 public class ParsysIndexer extends AbstractResourceIndexer {
 
     @Override
-    public List<ResourceReference> getReferences(Resource resource) {        
+    public List<ResourceReference> getReferences(Resource resource) {
         Iterator<Resource> resources = resource.listChildren();
         List<ResourceReference> children = new ArrayList<ResourceReference>();
         while (resources.hasNext()) {
             children.add(new ResourceReference(resources.next()));
         }
         return children;
-    }   
+    }
 }

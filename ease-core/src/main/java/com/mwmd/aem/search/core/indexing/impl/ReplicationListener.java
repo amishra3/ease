@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.core.indexing.impl;
 
 import com.mwmd.aem.search.core.indexing.IndexService;
@@ -19,41 +15,37 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
-
 @Service
-@Property(name="event.topics",value=ReplicationAction.EVENT_TOPIC)
+@Property(name = "event.topics", value = ReplicationAction.EVENT_TOPIC)
 @Component
 public class ReplicationListener implements EventHandler {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ReplicationListener.class);
-    
     @Reference
     private SlingSettingsService slingSettings;
-    
     @Reference
     private IndexService indexService;
-    
     private boolean isAuthor;
-    
+
     @Activate
     protected void activate() {
-        
-        this.isAuthor = slingSettings.getRunModes().contains("author");        
+
+        this.isAuthor = slingSettings.getRunModes().contains("author");
     }
 
     @Override
     public void handleEvent(Event event) {
-        
+
         if (!isAuthor) {
             return;
         }
-        
+
         ReplicationAction action = ReplicationAction.fromEvent(event);
         String path = action.getPath();
         switch (action.getType()) {
-            case ACTIVATE:   
+            case ACTIVATE:
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Activation invoked for {}", path);
                 }
@@ -67,7 +59,6 @@ public class ReplicationListener implements EventHandler {
                 }
                 indexService.remove(path);
                 break;
-        }          
-    }    
-    
+        }
+    }
 }

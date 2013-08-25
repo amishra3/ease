@@ -110,8 +110,8 @@
 	
     <scm>       
         <developerConnection>scm:git:https://github.com/mwmd/ease.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <repositories>
         <repository>
             <id>mwmd-public</id>
@@ -174,6 +174,11 @@
             <plugins>     
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.4.1</version>
                 </plugin>           
@@ -224,9 +229,9 @@
         </developer>
     </developers>
 	
-	<modules>
-		<module>ease-core</module>
-		<module>ease-scr</module>
-		<module>ease-solr</module>
-	</modules>
+    <modules>
+        <module>ease-core</module>
+        <module>ease-scr</module>
+        <module>ease-solr</module>
+    </modules>
 </project>

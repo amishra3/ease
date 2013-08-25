@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mwmd.aem.search.solr.impl;
 
 import com.mwmd.aem.search.core.indexing.IndexException;
@@ -33,39 +29,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Solr implementation of {@link IndexServer}. This is the core of the EASE Solr connector.<br/>
+ * The connector requires an OSGi configuration in order to work. The following properties need to be configured:
+ * <ul>
+ * <li><i>url</i>: Address of the Solr instance. This must include the collection of the index within the Solr root
+ * path.</li>
+ * <li><i>id_prefix</i>: Prefix to put in front of all generated identifiers. The identifier will consist of the content
+ * path with the configured prefix.</li>
+ * <li><i>id_field</i>: Name of the unique identifier field in the Solr schema. Solr requires this field to be
+ * filled.</li>
+ * </ul>
  *
- * @author matth_000
+ * @author Matthias Wermund
  */
 @Service
 @Properties({
     @Property(name = "url", label = "Solr URL", description = "Address of Solr instance where to send update requests to."),
     @Property(name = "id_prefix", label = "ID prefix", description = "Prefix for path to generate unique ID.", value = "AEM:"),
     @Property(name = "id_field", label = "ID field name", description = "Field name of ID field.", value = "id")
-        
 })
 @Component(policy = ConfigurationPolicy.REQUIRE)
 public class SolrIndexServer implements IndexServer {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(SolrIndexServer.class);
-    
     private static final DateFormat FORMAT_TIMESTAMP = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-    
     private static final NumberFormat FORMAT_NUMBER = NumberFormat.getInstance();
-    
+
     static {
         FORMAT_NUMBER.setGroupingUsed(false);
         FORMAT_NUMBER.setMinimumFractionDigits(0);
     }
-    
     private ConcurrentUpdateSolrServer solrServer;
-    
     private String idPrefix;
-    
     private String idField;
-    
+
     @Activate
     protected void activate(Map<String, Object> properties) {
-        
+
         String url = (String) properties.get("url");
         if (url != null) {
             this.solrServer = new ConcurrentUpdateSolrServer(url, 25, 2);
@@ -78,10 +78,10 @@ public class SolrIndexServer implements IndexServer {
         this.idPrefix = (String) properties.get("id_prefix");
         this.idField = (String) properties.get("id_field");
     }
-    
+
     @Deactivate
     protected void deactivate() {
-        
+
         if (this.solrServer != null) {
             this.solrServer.shutdown();
         }
@@ -89,13 +89,13 @@ public class SolrIndexServer implements IndexServer {
 
     @Override
     public void add(String path, Map<String, Object> data) throws IndexException {
-        
+
         SolrInputDocument document = new SolrInputDocument();
         document.addField(this.idField, buildId(path));
         Set<String> fields = data.keySet();
-        for (String field: fields) {            
+        for (String field : fields) {
             if (field.equals(this.idField)) {
-                throw new IndexException("ID field must not get populated through data fields.");                
+                throw new IndexException("ID field must not get populated through data fields.");
             }
             Object fieldValue = data.get(field);
             if (fieldValue != null) {
@@ -111,29 +111,29 @@ public class SolrIndexServer implements IndexServer {
     }
 
     @Override
-    public void add(String path, Map<String, Object> data, ResourceBinary binary) throws IndexException {                
-        
+    public void add(String path, Map<String, Object> data, ResourceBinary binary) throws IndexException {
+
         if (binary == null) {
             add(path, data);
             return;
         }
-                
-        ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/extract"); 
+
+        ContentStreamUpdateRequest request = new ContentStreamUpdateRequest("/update/extract");
         request.addContentStream(new AssetContentStream(binary));
         request.setParam("literal.id", buildId(path));
         Set<String> fields = data.keySet();
-        for (String field: fields) {            
+        for (String field : fields) {
             if (field.equals(this.idField)) {
-                throw new IndexException("ID field must not get populated through data fields.");                
+                throw new IndexException("ID field must not get populated through data fields.");
             }
             Object fieldValue = data.get(field);
             if (fieldValue != null) {
                 if (fieldValue instanceof Collection) {
                     Collection<?> fieldValues = (Collection) fieldValue;
-                    for (Object value: fieldValues) {
+                    for (Object value : fieldValues) {
                         // TODO deal with numeric & date type values (format to string)
-                        request.setParam("literal." + field, valueToString(value));                        
-                    }                    
+                        request.setParam("literal." + field, valueToString(value));
+                    }
                 } else {
                     // assume it's one of the supported data types
                     request.setParam("literal." + field, valueToString(fieldValue));
@@ -147,29 +147,29 @@ public class SolrIndexServer implements IndexServer {
             throw new IndexException(e);
         }
     }
-    
+
     private static String valueToString(Object value) {
-        
+
         if (value instanceof Date) {
             return FORMAT_TIMESTAMP.format(value);
         }
         if (value instanceof Calendar) {
-            return FORMAT_TIMESTAMP.format(((Calendar)value).getTime());
+            return FORMAT_TIMESTAMP.format(((Calendar) value).getTime());
         }
         if (value instanceof Number) {
             return FORMAT_NUMBER.format(value);
         }
         return value.toString();
     }
-    
+
     private String buildId(String path) {
-        
+
         return StringUtils.defaultIfEmpty(this.idPrefix, "AEM:") + path;
     }
 
     @Override
     public void remove(String path) throws IndexException {
-        
+
         try {
             solrServer.deleteById(buildId(path));
         } catch (Exception e) {
@@ -179,7 +179,7 @@ public class SolrIndexServer implements IndexServer {
 
     @Override
     public void commit() throws IndexException {
-        
+
         try {
             solrServer.commit();
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class SolrIndexServer implements IndexServer {
 
     @Override
     public void rollback() throws IndexException {
-        
+
         try {
             solrServer.rollback();
         } catch (Exception e) {
@@ -199,17 +199,14 @@ public class SolrIndexServer implements IndexServer {
 
     @Override
     public void clear() throws IndexException {
-        
+
         try {
             UpdateRequest request = new UpdateRequest("/update");
-            request.deleteByQuery(this.idField + ":" + ClientUtils.escapeQueryChars(this.idPrefix) + "*");            
+            request.deleteByQuery(this.idField + ":" + ClientUtils.escapeQueryChars(this.idPrefix) + "*");
             solrServer.request(request);
             solrServer.commit();
         } catch (Exception e) {
             throw new IndexException(e);
         }
     }
-    
-    
-    
 }
