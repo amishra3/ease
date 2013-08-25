@@ -62,7 +62,7 @@ Tested on AEM 5.6.1.
 Example implementation
 -----------
 
-A fully integrated [example implementation](https://github.com/mwmd/ease/tree/master/example) based on (Adobe's Maven archtype)[http://dev.day.com/docs/en/cq/current/core/how_to/how_to_use_the_vlttool/vlt-mavenplugin.html#multimodule-content-package-archetype]
+A fully integrated [example implementation](https://github.com/mwmd/ease/tree/master/example) based on [Adobe's Maven archtype](http://dev.day.com/docs/en/cq/current/core/how_to/how_to_use_the_vlttool/vlt-mavenplugin.html#multimodule-content-package-archetype)
 is available as source on GitHub. From the same folder, you can download a pre-build CRX package for installation in your AEM instance as well.
 
 The example project indexes default Geometrixx content and integrates with Apache Solr. It provides a simple search UI to test queries and support binary indexing. It uses facet filtering and full text search.
