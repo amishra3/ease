@@ -47,11 +47,11 @@ Getting started
 
 Tested on AEM 5.6.1.
 
-### API Documentation ###
+### Javadoc API Documentation ###
 
-* [ease-core javadoc](http://nexus.wmd-software.com/api/ease-core/current/)
-* [ease-scr javadoc](http://nexus.wmd-software.com/api/ease-scr/current/)
-* [ease-solr javadoc](http://nexus.wmd-software.com/api/ease-solr/current/)
+* [ease-core](http://nexus.wmd-software.com/api/ease-core/current/)
+* [ease-scr](http://nexus.wmd-software.com/api/ease-scr/current/)
+* [ease-solr](http://nexus.wmd-software.com/api/ease-solr/current/)
 
 ### EASE Maven dependencies ###
 
@@ -82,6 +82,7 @@ To start with your own search integration project, all you need to do is add the
         </repository>
     </repositories>
 	
+
 ### Creating custom indexers ### 
 
 Now that you've the API available in your project, you can start building your own indexers. The first step is to build at least one indexer for your page resource type. 
